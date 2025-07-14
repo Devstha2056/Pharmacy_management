@@ -6,6 +6,7 @@ class Pharmacy(models.Model):
     _description = 'Pharmacy Management System'
 
     name = fields.Char(string='Pharmacy Name')
+
     user_id = fields.Many2one('res.users', string='User')
     # employee_id = fields.Many2one('hr.employee', string='Employee')
     company_id = fields.Many2one('res.company', string='Company')
@@ -18,3 +19,4 @@ class Pharmacy(models.Model):
     is_active = fields.Boolean(string='Is Active', default=True)
     capture_images = fields.One2many('image.storage', 'image_id', string='Attached Images', store=True, tracking=True)
     capture_image = fields.Binary(string='Attached File', store=True)
+
