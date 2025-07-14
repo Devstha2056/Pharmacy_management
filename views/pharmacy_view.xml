@@ -8,7 +8,7 @@
             <list string="Pharmacy List">
                 <field name="name"/>
                 <field name="user_id"/>
-                <field name="employee_id"/>
+
                 <field name="partner_id"/>
                 <field name="phone_id"/>
                 <field name="city_id"/>
@@ -27,10 +27,11 @@
                     <group>
                         <field name="name"/>
                         <field name="user_id"/>
-                        <field name="employee_id"/>
+
                         <field name="company_id"/>
                         <field name="partner_id"/>
                         <field name="country_id"/>
+                        <field name="capture_image" widget="image"/>
                     </group>
                     <group string="Customer Details">
                         <field name="email_id"/>

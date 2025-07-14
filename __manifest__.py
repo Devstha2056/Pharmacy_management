@@ -6,9 +6,10 @@
     'author': 'Devendra Kumar Shrestha',
     'summary': 'Used for Pharmacy',
     'description': """
-        This module provides Fully feature pharmacy management system for clients and pharmacist to order,deliverd and track the order record.
+        This module provides Fully feature pharmacy management system for clients and pharmacist to order,
+        deliverd and track the order record.
     """,
-    'depends': ['base', 'mail'],
+    'depends': ['base','contacts','mail'],
     'data': [
         'security/ir.model.access.csv',
         'views/pharmacy_view.xml',
