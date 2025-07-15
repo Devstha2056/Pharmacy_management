@@ -67,7 +67,9 @@ class Pharmacy(models.Model):
                     rec.age = f"{years} year"
                 elif months > 0:
                     rec.age = f"{months} month"
-                else:
-                    rec.age = "Less than a month"
+                elif days > 0:
+                    rec.age = f"{days} day"
+                
+                        
             else:
                 rec.age = "Not set"
