@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
-
+    <data noupdate="1">
         <record id="auto_sequence_pharmacy_seq" model="ir.sequence">
-            <field name="name">Custom Sequence</field>
+            <field name="name">Pharmacy Order Sequence</field>
             <field name="code">pharmacy.pharmacy</field>
             <field name="prefix">ORDER</field>
             <field name="padding">5</field>
-            <field eval="1" name="number_increment"/>
-            <field eval="False" name="company_id"/>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
         </record>
-
     </data>
-
-
 </odoo>
-

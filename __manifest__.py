@@ -12,7 +12,9 @@
     'depends': ['base','contacts','mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/data_view.xml',
         'views/pharmacy_view.xml',
+
         'views/menu_view.xml',
 
     ],
