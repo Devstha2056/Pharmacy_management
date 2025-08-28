@@ -69,7 +69,12 @@ class Pharmacy(models.Model):
                     rec.age = f"{months} month"
                 elif days > 0:
                     rec.age = f"{days} day"
-                
                         
             else:
                 rec.age = "Not set"
+
+    api.constraint('date_of_birth', 'date', string="Date of Birth should be less than or equal to today",
+                   help="Date of Birth should be less than or equal to today",
+                   check=lambda self: all(rec.date_of_birth <= date.today() for rec in self))
+    
+    
