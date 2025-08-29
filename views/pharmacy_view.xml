@@ -22,31 +22,44 @@
         <field name="model">pharmacy.pharmacy</field>
         <field name="arch" type="xml">
             <form string="Pharmacy Form">
+                <header>
+                    <button name="action_confirm" string="Confirm" class="oe_highlight" type="object"/>
+                    <button name="action_canceled" string="Canceled" class="oe_highlight"  type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="" statusbar_colors="{'draft':'blue','done':'green'}"/>
+                </header>
                 <sheet>
-                     <div class="oe_title">
+                    <div class="oe_title">
                         <h1>
                             <field name="order_number"/>
                         </h1>
                     </div>
-                    <group>
-                        <field name="partner_id"  options="{'no_open': True, 'no_create': True}"/>
-                        <field name="country_id"/>
-
-                        <field name="email_id"/>
-                        <field name="phone_id"/>
-                        <field name="street_id"/>
-                        <field name="city_id"/>
+                    <group string="General Information" >
+                        <field name="partner_id"/>
                         <field name="date_of_birth"/>
                         <field name="age"/>
+                    </group>
+                    <group string="Contact Details">
+                        <group>
+                            <field name="email_id"/>
+                            <field name="phone_id"/>
+                        </group>
 
                     </group>
+                    <group string="Address">
+                         <field name="country_id" options="{'no_open': True, 'no_create': True}"/>
+                         <field name="city_id"/>
+                        <field name="street_id"/>
+
+                    </group>
+
                     <group string="Image">
-                          <field name="capture_image" widget="image"/>
+                        <field name="capture_image" widget="image"/>
                     </group>
                     <group>
                         <field name="is_active" invisible="1"/>
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>

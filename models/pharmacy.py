@@ -1,6 +1,8 @@
 
 from odoo import models, fields, api
-from datetime import date
+from datetime import date,datetime
+from odoo.exceptions import ValidationError,UserError
+from odoo.tools.safe_eval import pytz
 
 class Pharmacy(models.Model):
     _name = 'pharmacy.pharmacy'
@@ -17,7 +19,7 @@ class Pharmacy(models.Model):
 
     description = fields.Text(string='Description', help="Description of the Pharmacy Order")
 
-    partner_id = fields.Many2one('res.partner', string='Customer',required=True,  help="Customer Name")
+    partner_id = fields.Many2one('res.partner', string='Customer Name',required=True,  help="Customer Name")
 
     country_id = fields.Many2one('res.country', string='Country', help="Country Name",store=True)
 
@@ -31,13 +33,21 @@ class Pharmacy(models.Model):
 
     is_active = fields.Boolean(string='Is Active', default=True)
 
+    state = fields.Selection([('draft', 'Draft'),
+                              ('confirm', 'Order Confirmed '),
+                              ('done', 'Done'),
+                              ('order', 'Order Done'),
+                              ('cancel', 'Cancelled')],
+                             string='State', default='draft', index=True, required=True,tracking=True)
 
 
     capture_image = fields.Image(string='Upload Doctor Perception', store=True)
 
     age = fields.Char(string="Age", compute="_compute_age", store=True)
 
-    date_of_birth = fields.Date(string="Date of Birth")
+    date_of_birth = fields.Date(string="Date of Birth",store=True)
+
+
     @api.model
     def create(self, vals):
         if vals.get('order_number', 'New') == 'New':
@@ -50,6 +60,10 @@ class Pharmacy(models.Model):
             if rec.date_of_birth:
                 today = date.today()
                 dob = rec.date_of_birth
+
+                if dob > today:
+                    rec.age = "0"
+                    continue
 
                 years = today.year - dob.year
                 months = today.month - dob.month
@@ -69,12 +83,22 @@ class Pharmacy(models.Model):
                     rec.age = f"{months} month"
                 elif days > 0:
                     rec.age = f"{days} day"
-                        
+                else:
+                    rec.age = "0"
             else:
-                rec.age = "Not set"
+                rec.age = "0"
 
-    api.constraint('date_of_birth', 'date', string="Date of Birth should be less than or equal to today",
-                   help="Date of Birth should be less than or equal to today",
-                   check=lambda self: all(rec.date_of_birth <= date.today() for rec in self))
-    
-    
+    @api.constrains('date_of_birth')
+    def _check_date_of_birth(self):
+        for record in self:
+            if record.date_of_birth:
+                if record.date_of_birth > date.today():
+                    raise ValidationError("Date of Birth cannot be in the future.")
+
+
+    def action_confirm(self):
+        for record in self:
+            record.state = 'confirm'
+    def action_canceled(self):
+        for record in self:
+            record.state = 'cancel'
